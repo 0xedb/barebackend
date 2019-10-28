@@ -1,0 +1,21 @@
+{
+  "name": "barebackend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "author": "Bruno Edoh",
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon src/server.ts"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.1",
+    "@types/node": "^12.11.7",
+    "typescript": "^3.6.4"
+  }
+}
