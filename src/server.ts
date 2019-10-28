@@ -5,7 +5,14 @@ import express, {Application, Request, Response} from 'express';
 
 const app: Application = express();
 
-app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+    },
+  })
+);
+
 app.use(homeRouter);
 
 app.listen(PORT, () => console.log(`App on http://0.0.0.0:${PORT}`));
