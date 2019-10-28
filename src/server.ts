@@ -6,4 +6,4 @@ const app: Application = express();
 
 app.use(homeRouter);
 
-app.listen(PORT, () => console.log(`App on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`App on http://0.0.0.0:${PORT}`));
