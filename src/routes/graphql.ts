@@ -9,20 +9,21 @@ const schema = buildSchema(`
   }
 `);
 
-var rootValue = {
+let rootValue = {
   code: ({email}: {email: string}): string => {
     return crypto.randomBytes(10).toString('hex');
   },
 };
 
 const router = Router();
-
-router.use(
+router.post(
   '/graphql',
   graphqlHTTP({
     schema,
     rootValue,
-    graphiql: process.env.BARE_ENV === 'production' ? false : true,
+    graphiql: false,
   })
 );
+ 
+
 export default router;
