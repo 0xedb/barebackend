@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 
-if (!(process.env.BARE_ENV === 'production')) {
+if (process.env.BARE_ENV !== 'production') {
   dotenv.config();
 }
 

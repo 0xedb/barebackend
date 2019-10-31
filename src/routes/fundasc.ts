@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import cors from 'cors';
 import {Router, Request, Response} from 'express';
-import sendMail from '../utils/mailer';
+import sendMail, {TransporterOptions, MailerOptions} from '../utils/mailer';
 import {buildSchema} from 'graphql';
 import graphqlHTTP from 'express-graphql';
 
@@ -14,31 +14,32 @@ const schema = buildSchema(`
   }
 `);
 
-const transportOptions = {
-  host: 'smtp.gmail.com',
-  port: 465,
-  secure: true, // true for 465, false for other ports
-  auth: {
-    user: process.env.FUNDUS_USER as string,
-    pass: process.env.FUNDUS_PASS as string,
-  },
-};
-
-const mailOptions = {
-  from: '"FundUs 👻" <fundus.flask@gmail.com>', // sender address
-  to: 'edohbruno@gmail.com', // list of receivers
-  subject: 'Login Code ✔', // Subject line
-  text: '', // plain text body
-  html: '', // html body
-};
-
 let rootValue = {
   code: ({email}: {email: string}): string => {
+    const transportOptions: TransporterOptions = {
+      host: process.env.FUN_HOST as string,
+      port: parseInt(process.env.FUN_PORT as string),
+      secure: true,
+      auth: {
+        user: process.env.FUN_USER as string,
+        pass: process.env.FUN_PASS as string,
+      },
+    };
+
+    const mailOptions: MailerOptions = {
+      from: `"FundUs 👻" <${process.env.FUN_USER}>`,
+      to: '',
+      subject: 'Login Code ✔',
+      text: '',
+      html: '',
+    };
+
     const bytes = crypto.randomBytes(10).toString('hex');
+    mailOptions.to = `${email}`;
     mailOptions.text = `Login code is: ${bytes}`;
-    mailOptions.html = `Login code is: <b><pre>${bytes}</pre></b>`;
+    mailOptions.html = `Login code is: <b><pre>${bytes}</pre></b>`; 
     sendMail(transportOptions, mailOptions);
-    return bytes;
+    return 'sent';
   },
 };
 
