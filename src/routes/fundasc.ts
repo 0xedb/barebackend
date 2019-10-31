@@ -1,9 +1,11 @@
 import crypto from 'crypto';
+import cors from 'cors';
 import {Router, Request, Response} from 'express';
 import {buildSchema} from 'graphql';
 import graphqlHTTP from 'express-graphql';
 
 const router = Router();
+router.use(cors());
 
 const schema = buildSchema(`
   type Query {
