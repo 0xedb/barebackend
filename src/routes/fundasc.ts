@@ -17,7 +17,6 @@ let rootValue = {
   },
 };
 
-
 if (process.env.BARE_ENV !== 'production') {
   router.use(
     '/graphql',

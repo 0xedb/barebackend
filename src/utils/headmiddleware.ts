@@ -1,11 +1,7 @@
 import {Request, Response, NextFunction} from 'express';
 
 export default (req: Request, res: Response, next: NextFunction): void => {
-  if (process.env.BARE_ENV !== 'production') {
-    res.set({
-      'Access-Control-Allow-Origin': '*', 
-    });
-  } else {
+  if (process.env.BARE_ENV === 'production') {
     res.set({
       'Content-Security-Policy': 'default-src https frame-ancestors none',
       'Strict-Transport-Security':
@@ -15,6 +11,8 @@ export default (req: Request, res: Response, next: NextFunction): void => {
       'X-XSS-Protection': '1; mode=block',
       'Access-Control-Allow-Origin': 'https://fundasc.ga',
     });
+  } else {
+    res.set({'Access-Control-Allow-Origin': '*'});
   }
   next();
 };
