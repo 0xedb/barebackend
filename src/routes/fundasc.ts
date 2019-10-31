@@ -16,6 +16,7 @@ const schema = buildSchema(`
 
 let rootValue = {
   code: ({email}: {email: string}): string => {
+    const bytes = crypto.randomBytes(10).toString('hex');
     const transportOptions: TransporterOptions = {
       host: process.env.FUN_HOST as string,
       port: parseInt(process.env.FUN_PORT as string),
@@ -28,16 +29,12 @@ let rootValue = {
 
     const mailOptions: MailerOptions = {
       from: `"FundUs 👻" <${process.env.FUN_USER}>`,
-      to: '',
+      to: `${email}`,
       subject: 'Login Code ✔',
-      text: '',
-      html: '',
+      text: `Login code is: ${bytes}`,
+      html: `Login code is: <b><pre>${bytes}</pre></b>`,
     };
 
-    const bytes = crypto.randomBytes(10).toString('hex');
-    mailOptions.to = `${email}`;
-    mailOptions.text = `Login code is: ${bytes}`;
-    mailOptions.html = `Login code is: <b><pre>${bytes}</pre></b>`; 
     sendMail(transportOptions, mailOptions);
     return 'sent';
   },
