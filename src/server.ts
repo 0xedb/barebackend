@@ -1,5 +1,5 @@
-import homeRouter from './routes/home';
-import graphApi from './routes/graphql';
+import homeRouter from './routes/home'; 
+import service from './routes/services'
 import {PORT} from './utils/serversetup';
 import helmet from './utils/headmiddleware';
 
@@ -10,6 +10,6 @@ const app: Application = express();
 app.all('*', helmet);
 
 app.use(homeRouter);
-app.use(graphApi);
+app.use('/service', service); 
 
 app.listen(PORT, () => console.log(`App on http://0.0.0.0:${PORT}`));
