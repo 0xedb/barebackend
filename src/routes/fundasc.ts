@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import cors from 'cors';
-import {Router, Request, Response} from 'express';
+import {Router} from 'express';
 import sendMail, {TransporterOptions, MailerOptions} from '../utils/mailer';
 import {buildSchema} from 'graphql';
 import graphqlHTTP from 'express-graphql';
@@ -11,11 +11,13 @@ router.use(cors());
 const schema = buildSchema(`
   type Query {
     code(email: String!): String!
+    login(email: String!): Boolean! 
   }
+ 
 `);
 
 let rootValue = {
-  code: ({email}: {email: string}): string => {
+  code: async ({email}: {email: string}) => {
     const bytes = crypto.randomBytes(10).toString('hex');
     const transportOptions: TransporterOptions = {
       host: process.env.FUN_HOST as string,
@@ -35,9 +37,18 @@ let rootValue = {
       html: `Login code is: <b><pre>${bytes}</pre></b>`,
     };
 
-    sendMail(transportOptions, mailOptions);
-    return 'sent';
+    const response = await sendMail(transportOptions, mailOptions);
+    if (response) {
+      return bytes;
+    } else {
+      return 'BAREBACKEND_ERROR';
+    }
   },
+
+  login: (email: String): boolean => {
+    return false;
+  },
+  ip: () => console.log(router),
 };
 
 const env = process.env.BARE_ENV !== 'production';
