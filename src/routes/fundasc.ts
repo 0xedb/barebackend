@@ -48,7 +48,6 @@ let rootValue = {
   login: (email: String): boolean => {
     return false;
   },
-  ip: () => console.log(router),
 };
 
 const env = process.env.BARE_ENV !== 'production';
