@@ -37,6 +37,7 @@ let rootValue = {
     };
 
     const response = await sendMail(transportOptions, mailOptions);
+    console.log(transportOptions)
     if (response) {
       return bytes;
     } else {
