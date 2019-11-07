@@ -12,8 +12,7 @@ const schema = buildSchema(`
   type Query {
     code(email: String!): String!
     login(email: String!): Boolean! 
-  }
- 
+  } 
 `);
 
 let rootValue = {
